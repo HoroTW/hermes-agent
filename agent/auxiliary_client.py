@@ -1537,6 +1537,9 @@ class _CodexCompletionsAdapter:
             for item in (getattr(final, "output", None) or []):
                 item_type = _item_get(item, "type")
                 if item_type == "message":
+                    # Commentary and analysis are not the auxiliary call's final answer.
+                    if _item_get(item, "phase") in {"commentary", "analysis"}:
+                        continue
                     for part in (_item_get(item, "content") or []):
                         ptype = _item_get(part, "type")
                         if ptype in {"output_text", "text"}:
